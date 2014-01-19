@@ -13,7 +13,7 @@ if (Meteor.isClient) {
 			var ctx = canvas.getContext("2d");
  			
 			for (i=0; i<data.length; i++) { 
-				ctx.fillRect(i, i, 1, 1);
+				ctx.fillRect(data[i].x, data[i].y, 1, 1);
 			}
 		    //canvas.draw(data);
  	  	});
