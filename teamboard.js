@@ -1,22 +1,30 @@
 if (Meteor.isClient) {
 	points = new Meteor.Collection('pointsCollection');
 	
-	Deps.autorun( function () {
+	Deps.autorun(function () {
 	  Meteor.subscribe('pointsSubscription');
 	});
 	
-	Meteor.startup( function() {
+	Meteor.startup(function() {
  	
-	    Deps.autorun( function() {
+	    Deps.autorun(function() {
 	    	var data = points.find({}).fetch();
 			var canvas = document.getElementById('sketchpad');
-			var ctx = canvas.getContext("2d");
- 			
-			for (i=0; i<data.length; i++) { 
-				ctx.fillRect(data[i].x, data[i].y, 1, 1);
+			var context = canvas.getContext("2d");
+ 			context.beginPath();
+			
+			context.moveTo(data[0].x, data[0].y);
+			
+			for (i=1; i<data.length-2; i++) { 
+				var xCoords = (data[i].x + data[i + 1].x) / 2;
+				var yCoords = (data[i].y + data[i + 1].y) / 2;
+				context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
+				context.stroke();
 			}
-		    //canvas.draw(data);
- 	  	});
+			
+			// curve through the last two points
+			context.quadraticCurveTo(data[i].x, data[i].y, data[i+1].x,data[i+1].y);
+  	  	});
 	});	
 
     Template.canvas.rendered = function(){
@@ -31,7 +39,6 @@ if (Meteor.isClient) {
                       context.beginPath();
                       context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
-				      coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
 					  points.insert({ 
 					  	x: (coors.x),
 					    y: (coors.y)
@@ -41,7 +48,6 @@ if (Meteor.isClient) {
                       if (this.isDrawing) {
                          context.lineTo(coors.x, coors.y);
                          context.stroke();
-					     coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
 					     points.insert({ 
 						 	x: (coors.x),
 						    y: (coors.y)
@@ -52,7 +58,6 @@ if (Meteor.isClient) {
                       if (this.isDrawing) {
                          this.touchmove(coors);
                          this.isDrawing = false;
-					     coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
 					     points.insert({ 
 						 	x: (coors.x),
 						    y: (coors.y)
@@ -82,14 +87,26 @@ if (Meteor.isClient) {
                   event.preventDefault();
                 },false);
         }
+
+		Template.canvas.events({ 
+			'click input': function(event) {
+				Meteor.call('clear', function() {
+					var canvas = document.getElementById('sketchpad');
+					canvas.clear();
+				});
+			}
+		});
+	
 }
+		
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
-	
+	Meteor.startup(function () {
+  
  	points = new Meteor.Collection('pointsCollection');
 
-	Meteor.publish('pointsSubscription', function () {
+	Meteor.publish('pointsSubscription', function() {
 	  return points.find();
 	});
 
@@ -98,5 +115,5 @@ if (Meteor.isServer) {
 	    points.remove({});
 	  }
 	});
-
+});
 }
