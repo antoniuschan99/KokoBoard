@@ -54,6 +54,7 @@ if (Meteor.isClient) {
 						//	console.log("Y Coordinate " + data[i].y);		
 				 		//}
 				    }	
+				    
 				}
 			         
 			});
@@ -61,10 +62,10 @@ if (Meteor.isClient) {
 		
  		var nextLine = 1;
  		
-		Deps.autorun(function() {
+		//Deps.autorun(function() {
 			
 	    	var data = points.find().fetch();
-			console.log("Retrieve Data");
+			console.log("Retrieved Data");
 			
 			if (data.length > 0) {
 				if (data[data.length-1].lineNumber > nextLine) {
@@ -77,7 +78,8 @@ if (Meteor.isClient) {
 				var canvas = document.getElementById('sketchpad');
 		        var context = canvas.getContext('2d');
 				var coordinates = document.getElementById('coordinates');
- 						
+ 				var pointsCollectionList = [];
+		
                 // create a drawer which tracks touch movements
                 var drawer = {
                    isDrawing: false,
@@ -86,11 +88,13 @@ if (Meteor.isClient) {
                       context.beginPath();
                       context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
-					  points.insert({ 
-						lineNumber: nextLine,
+                      pointsCollectionList = [];
+                      pointsCollectionList.push({ lineNumber : nextLine, x: (coors.x), y: (coors.y)} );
+					  /* points.insert({ 
+					  lineNumber: nextLine,
 					  	x: (coors.x),
-					    y: (coors.y)
-					  });
+					  	y: (coors.y)
+					  }); */
 					  isReactive = false;
 					  coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
                    },
@@ -99,11 +103,12 @@ if (Meteor.isClient) {
 						 console.log("Touch Move: " + nextLine);
                          context.lineTo(coors.x, coors.y);
                          context.stroke();
-					     points.insert({ 
+                         pointsCollectionList.push( { lineNumber : nextLine, x: (coors.x), y: (coors.y)});
+					   /* points.insert({ 
 							lineNumber: nextLine,
 						 	x: (coors.x),
 						    y: (coors.y)
-						 });
+						 }); */
 						 isReactive = false;
 						 coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
                       }
@@ -111,16 +116,19 @@ if (Meteor.isClient) {
                    touchend: function(coors){
                       if (this.isDrawing) {
                       	 nextLine++;
-						 console.log("Touch End: " + nextLine);
+						 console.log("Touch End: " + nextLine + " " + pointsCollectionList[0].lineNumber);
                          //this.touchmove(coors);
                          this.isDrawing = false;
                          isReactive = true;
-					     //points.insert({ 
-						 //	lineNumber: nextLine,
-						 //	x: (coors.x),
-						 // y: (coors.y)
-						 //});
-                      }
+                         
+                         for (i=0;i<pointsCollectionList.length-1;i++) {
+						     points.insert({ 
+							 	lineNumber: pointsCollectionList[i].lineNumber,
+							 	x: pointsCollectionList[i].x,
+							 	y: pointsCollectionList[i].y
+							 });
+	                      }
+	               	  }
                    }
                 };
 
@@ -166,7 +174,7 @@ if (Meteor.isClient) {
 				});
 			}
 
-		});
+		//});
  
   	});	
 }
