@@ -8,13 +8,14 @@ if (Meteor.isClient) {
 		  Meteor.subscribe('pointsSubscription');
 		});
 		
+		
 	    Deps.autorun(function() {
 			var data = points.find().fetch();	
 			var canvas = document.getElementById('sketchpad');
 			var context = canvas.getContext("2d");
 			var executeOnce = true;
 			var currentLine = 1;
-			
+
 			if (data.length > 0) {
 			    
 	        	for (i=0; i<data.length-1; i++) {
@@ -33,9 +34,10 @@ if (Meteor.isClient) {
 						//console.log("Execute Once: " + executeOnce);
 						executeOnce = false;
 				    } else {
-						var xCoords = (data[i].x + data[i + 1].x) / 2;
-		        		var yCoords = (data[i].y + data[i + 1].y) / 2;
-		        		context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
+						//var xCoords = (data[i].x + data[i + 1].x) / 2;
+		        		//var yCoords = (data[i].y + data[i + 1].y) / 2;
+		        		//context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
+		        		context.lineTo(data[i].x, data[i].y);
 		        		context.stroke();
 		        		//console.log("Stroke - X: " + data[i].x + " Y: " + data[i].y);
 					}
@@ -59,7 +61,7 @@ if (Meteor.isClient) {
 			
 			if (data.length > 0) {
 				if (data[data.length-1].lineNumber > nextLine) {
-					nextLine = data[data.length-1].lineNumber;
+					nextLine = data[data.length-1].lineNumber + 1;
 					console.log("Next Line " + nextLine);
 				}
 			} 
@@ -74,8 +76,8 @@ if (Meteor.isClient) {
                    isDrawing: false,
                    touchstart: function(coors){
 					  console.log("Touch Start: " + nextLine);
-                      context.beginPath();
-                      context.moveTo(coors.x, coors.y);
+                      //context.beginPath();
+                      //context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
 					  points.insert({ 
 						lineNumber: nextLine,
@@ -87,8 +89,8 @@ if (Meteor.isClient) {
                    touchmove: function(coors){
                       if (this.isDrawing) {
 						 console.log("Touch Move: " + nextLine);
-                         context.lineTo(coors.x, coors.y);
-                         context.stroke();
+                         //context.lineTo(coors.x, coors.y);
+                         //context.stroke();
 					     points.insert({ 
 							lineNumber: nextLine,
 						 	x: (coors.x),
@@ -99,6 +101,7 @@ if (Meteor.isClient) {
                    },
                    touchend: function(coors){
                       if (this.isDrawing) {
+                      	 nextLine++;
 						 console.log("Touch End: " + nextLine);
                          //this.touchmove(coors);
                          this.isDrawing = false;
@@ -107,7 +110,6 @@ if (Meteor.isClient) {
 						 //	x: (coors.x),
 						 // y: (coors.y)
 						 //});
-						nextLine++;
                       }
                    }
                 };
