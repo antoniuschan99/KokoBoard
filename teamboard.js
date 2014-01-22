@@ -3,53 +3,60 @@ if (Meteor.isClient) {
 	Meteor.startup(function() {
  	
 		points = new Meteor.Collection('pointsCollection');
-		
+		isReactive = true;
+
 		Deps.autorun(function () {
-		  Meteor.subscribe('pointsSubscription');
+		 
 		});
 		
-		
-	    Deps.autorun(function() {
-			var data = points.find().fetch();	
-			var canvas = document.getElementById('sketchpad');
-			var context = canvas.getContext("2d");
-			var executeOnce = true;
-			var currentLine = 1;
+		Meteor.subscribe('pointsSubscription', function() {
 
-			if (data.length > 0) {
-			    
-	        	for (i=0; i<data.length-1; i++) {
+		    Deps.autorun(function() {
+		    	if (isReactive == true) {
+		    		console.log("Is Reactive");
+					var data = points.find({}).fetch();	
+					var canvas = document.getElementById('sketchpad');
+					var context = canvas.getContext("2d");
+					var executeOnce = true;
+					var currentLine = 1;
 					
-					//console.log("Current Line: " + currentLine + " Data LineNumber: " + data[i].lineNumber);
-					
-					if (data[i].lineNumber == currentLine) {
-						//console.log("Execute Once: " + executeOnce + " Data Line Number: " + data[i].lineNumber + " currentLine: " + currentLine);
-						executeOnce = true;
-						currentLine++;
-					}
-					
-					if (executeOnce == true) {
-						context.beginPath();
-						context.moveTo(data[i].x, data[i].y);
-						//console.log("Execute Once: " + executeOnce);
-						executeOnce = false;
-				    } else {
-						//var xCoords = (data[i].x + data[i + 1].x) / 2;
-		        		//var yCoords = (data[i].y + data[i + 1].y) / 2;
-		        		//context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
-		        		context.lineTo(data[i].x, data[i].y);
-		        		context.stroke();
-		        		//console.log("Stroke - X: " + data[i].x + " Y: " + data[i].y);
-					}
-					
-		    	}
-		    	
-				//for(i=0;i<data.length;i++) {
-				//	console.log("Line Number " + data[i].lineNumber);
-				//	console.log("X Coordinate " + data[i].x);
-				//	console.log("Y Coordinate " + data[i].y);		
-		 		//}
-		    }		    
+					if (data.length > 0) {
+					    
+			        	for (i=0; i<data.length-1; i++) {
+							
+							//console.log("Current Line: " + currentLine + " Data LineNumber: " + data[i].lineNumber);
+							
+							if (data[i].lineNumber == currentLine) {
+								//console.log("Execute Once: " + executeOnce + " Data Line Number: " + data[i].lineNumber + " currentLine: " + currentLine);
+								executeOnce = true;
+								currentLine++;
+							}
+							
+							if (executeOnce == true) {
+								context.beginPath();
+								context.moveTo(data[i].x, data[i].y);
+								//console.log("Execute Once: " + executeOnce);
+								executeOnce = false;
+						    } else {
+								//var xCoords = (data[i].x + data[i + 1].x) / 2;
+				        		//var yCoords = (data[i].y + data[i + 1].y) / 2;
+				        		//context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
+				        		context.lineTo(data[i].x, data[i].y);
+				        		context.stroke();
+				        		//console.log("Stroke - X: " + data[i].x + " Y: " + data[i].y);
+							}
+							
+				    	}
+				    	
+						//for(i=0;i<data.length;i++) {
+						//	console.log("Line Number " + data[i].lineNumber);
+						//	console.log("X Coordinate " + data[i].x);
+						//	console.log("Y Coordinate " + data[i].y);		
+				 		//}
+				    }	
+				}
+			         
+			});
 		});
 		
  		var nextLine = 1;
@@ -76,26 +83,28 @@ if (Meteor.isClient) {
                    isDrawing: false,
                    touchstart: function(coors){
 					  console.log("Touch Start: " + nextLine);
-                      //context.beginPath();
-                      //context.moveTo(coors.x, coors.y);
+                      context.beginPath();
+                      context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
 					  points.insert({ 
 						lineNumber: nextLine,
 					  	x: (coors.x),
 					    y: (coors.y)
 					  });
+					  isReactive = false;
 					  coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
                    },
                    touchmove: function(coors){
                       if (this.isDrawing) {
 						 console.log("Touch Move: " + nextLine);
-                         //context.lineTo(coors.x, coors.y);
-                         //context.stroke();
+                         context.lineTo(coors.x, coors.y);
+                         context.stroke();
 					     points.insert({ 
 							lineNumber: nextLine,
 						 	x: (coors.x),
 						    y: (coors.y)
 						 });
+						 isReactive = false;
 						 coordinates.innerHTML = "Coordinates X: " + coors.x + " Coordinates Y: " + coors.y;
                       }
                    },
@@ -105,6 +114,7 @@ if (Meteor.isClient) {
 						 console.log("Touch End: " + nextLine);
                          //this.touchmove(coors);
                          this.isDrawing = false;
+                         isReactive = true;
 					     //points.insert({ 
 						 //	lineNumber: nextLine,
 						 //	x: (coors.x),
