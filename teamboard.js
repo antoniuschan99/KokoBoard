@@ -4,10 +4,7 @@ if (Meteor.isClient) {
  	
 		points = new Meteor.Collection('pointsCollection');
 		isReactive = true;
-
-		Deps.autorun(function () {
-		 
-		});
+		lineWidth = "2";
 		
 		Meteor.subscribe('pointsSubscription', function() {
 
@@ -34,13 +31,16 @@ if (Meteor.isClient) {
 							
 							if (executeOnce == true) {
 								context.beginPath();
+							 	context.lineWidth = data[i].lineWidth;
+                      			context.lineJoin = "round"; 
+					  			context.lineCap = "round";
 								context.moveTo(data[i].x, data[i].y);
 								//console.log("Execute Once: " + executeOnce);
 								executeOnce = false;
 						    } else {
-								//var xCoords = (data[i].x + data[i + 1].x) / 2;
+								//var xCoords = (data[i].x + data[i - 1].x) / 2;
 				        		//var yCoords = (data[i].y + data[i + 1].y) / 2;
-				        		//context.quadraticCurveTo(data[i].x, data[i].y, xCoords, yCoords);
+				        		//context.quadraticCurveTo(data[i].x, data[i].y, data[i-1].x, data[i-1].y);
 				        		context.lineTo(data[i].x, data[i].y);
 				        		context.stroke();
 				        		//console.log("Stroke - X: " + data[i].x + " Y: " + data[i].y);
@@ -86,10 +86,13 @@ if (Meteor.isClient) {
                    touchstart: function(coors){
 					  console.log("Touch Start: " + nextLine);
                       context.beginPath();
+                      context.lineWidth = lineWidth;
+                      context.lineJoin = "round"; 
+					  context.lineCap = "round";
                       context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
                       pointsCollectionList = [];
-                      pointsCollectionList.push({ lineNumber : nextLine, x: (coors.x), y: (coors.y)} );
+                      pointsCollectionList.push({ lineNumber : nextLine, lineWidth : lineWidth, x: (coors.x), y: (coors.y)} );
 					  /* points.insert({ 
 					  lineNumber: nextLine,
 					  	x: (coors.x),
@@ -103,7 +106,7 @@ if (Meteor.isClient) {
 						 console.log("Touch Move: " + nextLine);
                          context.lineTo(coors.x, coors.y);
                          context.stroke();
-                         pointsCollectionList.push( { lineNumber : nextLine, x: (coors.x), y: (coors.y)});
+                         pointsCollectionList.push( { lineNumber : nextLine, lineWidth : lineWidth, x: (coors.x), y: (coors.y)});
 					   /* points.insert({ 
 							lineNumber: nextLine,
 						 	x: (coors.x),
@@ -124,6 +127,7 @@ if (Meteor.isClient) {
                          for (i=0;i<pointsCollectionList.length-1;i++) {
 						     points.insert({ 
 							 	lineNumber: pointsCollectionList[i].lineNumber,
+							 	lineWidth : pointsCollectionList[i].lineWidth,
 							 	x: pointsCollectionList[i].x,
 							 	y: pointsCollectionList[i].y
 							 });
@@ -164,14 +168,25 @@ if (Meteor.isClient) {
                   event.preventDefault();
                 },false);
 
-				Template.canvas.events({ 
-					'click input': function(event) {
-						Meteor.call('clear', function() {
-							var canvas = document.getElementById('sketchpad');
-							canvas.clear();
-						});
-					}
-				});
+				document.getElementById("clearCanvasButton").onclick = function() {
+					Meteor.call('clear', function() {
+						var canvas = document.getElementById('sketchpad');
+						canvas.clear();
+					});
+				}
+				
+				document.getElementById("lineWidthSmall").onclick = function() {
+					lineWidth = "2";
+				}
+				
+				document.getElementById("lineWidthMedium").onclick = function() {
+					lineWidth = "4";
+				}
+				
+				document.getElementById("lineWidthLarge").onclick = function() {
+					lineWidth = "6";
+				}
+				 
 			}
 
 		//});
