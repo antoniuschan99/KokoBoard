@@ -7,14 +7,19 @@
 
 <template name="canvas">
 
-	<canvas id="sketchpad" width="768px" height="1024px"></canvas>
+	<canvas id="sketchpad" height="500px" width="950px"></canvas>
 	
-	<button id="clearCanvasButton" style="position: absolute; float: right;">Clear Canvas</button>
-	
-	<button id="lineWidthSmall" style="position: absolute; float: right; margin-top: 100px;">Small</button>
-	<button id="lineWidthMedium" style="position: absolute; float: right; margin-top: 150px;">Medium</button>
-	<button id="lineWidthLarge" style="position: absolute; float: right; margin-top: 200px;">Large</button>
-
-	<div id="coordinates" style="position: absolute; float: right; margin-top: 100px;">ss</div>
+	<div id="canvasButtonContainer">
+		<button id="clearCanvasButton">Clear Canvas</button>
+		
+		<button id="lineWidthSmall">Small</button>
+		<button id="lineWidthMedium">Medium</button>
+		<button id="lineWidthLarge">Large</button>
+		
+		<button id="colorBlack">Black</button>
+		<button id="colorBlue">Blue</button>
+		<button id="colorRed">Red</button>
+		<button id="colorGreen">Green</button>
+	</div>
 	
 </template>

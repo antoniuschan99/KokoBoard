@@ -5,6 +5,7 @@ if (Meteor.isClient) {
 		points = new Meteor.Collection('pointsCollection');
 		isReactive = true;
 		lineWidth = "2";
+		lineColor = "#000000";
 		
 		Meteor.subscribe('pointsSubscription', function() {
 
@@ -31,6 +32,7 @@ if (Meteor.isClient) {
 							
 							if (executeOnce == true) {
 								context.beginPath();
+								context.strokeStyle = data[i].lineColor;
 							 	context.lineWidth = data[i].lineWidth;
                       			context.lineJoin = "round"; 
 					  			context.lineCap = "round";
@@ -86,13 +88,14 @@ if (Meteor.isClient) {
                    touchstart: function(coors){
 					  console.log("Touch Start: " + nextLine);
                       context.beginPath();
+                      context.strokeStyle = lineColor;
                       context.lineWidth = lineWidth;
                       context.lineJoin = "round"; 
 					  context.lineCap = "round";
                       context.moveTo(coors.x, coors.y);
                       this.isDrawing = true;
                       pointsCollectionList = [];
-                      pointsCollectionList.push({ lineNumber : nextLine, lineWidth : lineWidth, x: (coors.x), y: (coors.y)} );
+                      pointsCollectionList.push({ lineNumber : nextLine, lineWidth : lineWidth, lineColor : lineColor, x: (coors.x), y: (coors.y)} );
 					  /* points.insert({ 
 					  lineNumber: nextLine,
 					  	x: (coors.x),
@@ -106,7 +109,7 @@ if (Meteor.isClient) {
 						 console.log("Touch Move: " + nextLine);
                          context.lineTo(coors.x, coors.y);
                          context.stroke();
-                         pointsCollectionList.push( { lineNumber : nextLine, lineWidth : lineWidth, x: (coors.x), y: (coors.y)});
+                         pointsCollectionList.push( { lineNumber : nextLine, lineWidth : lineWidth, lineColor : lineColor, x: (coors.x), y: (coors.y)});
 					   /* points.insert({ 
 							lineNumber: nextLine,
 						 	x: (coors.x),
@@ -128,6 +131,7 @@ if (Meteor.isClient) {
 						     points.insert({ 
 							 	lineNumber: pointsCollectionList[i].lineNumber,
 							 	lineWidth : pointsCollectionList[i].lineWidth,
+							 	lineColor : pointsCollectionList[i].lineColor,
 							 	x: pointsCollectionList[i].x,
 							 	y: pointsCollectionList[i].y
 							 });
@@ -170,8 +174,12 @@ if (Meteor.isClient) {
 
 				document.getElementById("clearCanvasButton").onclick = function() {
 					Meteor.call('clear', function() {
-						var canvas = document.getElementById('sketchpad');
-						canvas.clear();
+						//var canvas = document.getElementById('sketchpad');
+						//canvas.clear();
+						//points.remove({});
+						Meteor.call('clear')
+						//location.reload();
+						
 					});
 				}
 				
@@ -185,6 +193,22 @@ if (Meteor.isClient) {
 				
 				document.getElementById("lineWidthLarge").onclick = function() {
 					lineWidth = "6";
+				}
+				
+				document.getElementById("colorBlack").onclick = function() {
+					lineColor = "black";
+				}
+				
+				document.getElementById("colorBlue").onclick = function() {
+					lineColor = "blue";
+				}
+				
+				document.getElementById("colorRed").onclick = function() {
+					lineColor = "#FF0000";
+				}
+				
+				document.getElementById("colorGreen").onclick = function() {
+					lineColor = "green";
 				}
 				 
 			}
