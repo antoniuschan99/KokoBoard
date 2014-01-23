@@ -147,7 +147,7 @@ if (Meteor.isClient) {
                    // get the touch coordinates
                    var coors = {
                       x: event.targetTouches[0].pageX,
-                      y: event.targetTouches[0].pageY
+                      y: event.targetTouches[0].pageY - 75
                    };
                    // pass the coordinates to the appropriate handler
                    drawer[event.type](coors);       
@@ -175,32 +175,33 @@ if (Meteor.isClient) {
                 },false);
 
 				document.getElementById("clearCanvasButton").onclick = function() {
-					Meteor.call('clear', function() {
-						//var canvas = document.getElementById('sketchpad');
-						//canvas.clear();
-						//points.remove({});
-						Meteor.call('clear')
-						//location.reload();
-						
-					});
+					var confirmResult = confirm("Are you sure you want to clear canvas?");
+					
+					if (confirmResult == true) {
+						Meteor.call('clear', function() {
+							Meteor.call('clear')
+							location.reload();
+						});
+					}
 				}
 				
 				lineWidthEventHandler = function(elem) {
-   					document.getElementById(lineWidthElementId).style.fontWeight="normal";
+					document.getElementById(lineWidthElementId).style.border="3px solid grey";
+					
 					lineWidthElementId = elem.getAttribute("data-element-id");
-					document.getElementById(lineWidthElementId).style.fontWeight="bold";
-
    					lineWidth = elem.getAttribute("data-line-width");
+   					
+   					document.getElementById(lineWidthElementId).style.border="3px solid white";
  				}
 				
 				lineColorEventHandler = function(elem) {
-					document.getElementById(lineColorElementId).style.fontWeight="normal";
+					document.getElementById(lineColorElementId).style.border="3px solid grey";
+					
 					lineColorElementId = elem.getAttribute("data-element-id");
-					document.getElementById(lineColorElementId).style.fontWeight="bold";
-   					
-   					lineColor = elem.getAttribute("data-line-color");
+					lineColor = elem.getAttribute("data-line-color");
+					
+					document.getElementById(lineColorElementId).style.border="3px solid white";
  				}
- 				
  				
 			}
 
@@ -221,6 +222,7 @@ if (Meteor.isServer) {
 	Meteor.methods({
 	  'clear': function () {
 	    points.remove({});
+	      
 	  }
 	});
 }
