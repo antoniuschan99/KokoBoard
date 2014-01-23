@@ -48,11 +48,16 @@ header div {
 	
 	#canvasButtonContainer {
 		margin-top: 25px;
-		margin-left: 15px;
+		text-align: center;
 	}
 	
 	#clearCanvasButton, #lineWidthSmallButton, #lineWidthMediumButton, #lineWidthLargeButton, #colorBlackButton, #colorBlueButton, #colorRedButton, #colorGreenButton, #colorYellowButton {
 		display: inline;
+	}
+	
+	#lineWidthSmallButton, #colorBlackButton {
+		font-weight: bold;
+		margin-left: 150px;
 	}
 	
 }

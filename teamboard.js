@@ -81,7 +81,9 @@ if (Meteor.isClient) {
 		        var context = canvas.getContext('2d');
 				var coordinates = document.getElementById('coordinates');
  				var pointsCollectionList = [];
-		
+ 				var lineWidthElementId = "lineWidthSmallButton";
+		   		var lineColorElementId = "colorBlackButton";
+		   		
                 // create a drawer which tracks touch movements
                 var drawer = {
                    isDrawing: false,
@@ -183,38 +185,23 @@ if (Meteor.isClient) {
 					});
 				}
 				
-				document.getElementById("lineWidthSmallButton").onclick = function() {
-					lineWidth = "2";
-				}
+				lineWidthEventHandler = function(elem) {
+   					document.getElementById(lineWidthElementId).style.fontWeight="normal";
+					lineWidthElementId = elem.getAttribute("data-element-id");
+					document.getElementById(lineWidthElementId).style.fontWeight="bold";
+
+   					lineWidth = elem.getAttribute("data-line-width");
+ 				}
 				
-				document.getElementById("lineWidthMediumButton").onclick = function() {
-					lineWidth = "4";
-				}
-				
-				document.getElementById("lineWidthLargeButton").onclick = function() {
-					lineWidth = "6";
-				}
-				
-				document.getElementById("colorBlackButton").onclick = function() {
-					lineColor = "#000000";
-				}
-				
-				document.getElementById("colorBlueButton").onclick = function() {
-					lineColor = "#0000FF";
-				}
-				
-				document.getElementById("colorRedButton").onclick = function() {
-					lineColor = "#FF0000";
-				}
-				
-				document.getElementById("colorGreenButton").onclick = function() {
-					lineColor = "#00FF00";
-				}
-				
-				document.getElementById("colorYellowButton").onclick = function() {
-					lineColor = "#FFFF00";
-				}
-				 
+				lineColorEventHandler = function(elem) {
+					document.getElementById(lineColorElementId).style.fontWeight="normal";
+					lineColorElementId = elem.getAttribute("data-element-id");
+					document.getElementById(lineColorElementId).style.fontWeight="bold";
+   					
+   					lineColor = elem.getAttribute("data-line-color");
+ 				}
+ 				
+ 				
 			}
 
 		//});
