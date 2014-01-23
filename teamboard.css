@@ -3,26 +3,55 @@ html, body {
     overflow: hidden;
 }
 
-#sketchpad {
-	position: absolute;
-	border: 1px solid black;
+header {
+  height: 50px;
+  	position: relative;
+	background-color: #f9e299;
+}
+
+header div { 
+	font-weight: bold; font-size: 24px; padding-top: 15px; padding-left: 25px; font-style: helvetica;
+}
+
+#canvasContainer {
+	position: relative;
+	padding-top: 20px;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
 }
 
-#clearCanvasButton, #lineWidthSmall, #lineWidthMedium, #lineWidthLarge, #colorBlack, #colorBlue, #colorRed, #colorGreen {
+#sketchpad {
+	border: 1px solid black;
+	display: block;
+	margin: 0 auto;
+}
+
+#clearCanvasButton, #lineWidthSmallButton, #lineWidthMediumButton, #lineWidthLargeButton, #colorBlackButton, #colorBlueButton, #colorRedButton, #colorGreenButton, #colorYellowButton {
 	display: none;
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+	
+	header {
+		display: none;
+	}
+	
+	#canvasContainer {
+		padding: 0;
+	}
 	
 	#sketchpad {
 		position: relative;
 		border: 1px solid black;
 	}
 	
-	#clearCanvasButton, #lineWidthSmall, #lineWidthMedium, #lineWidthLarge, #colorBlack, #colorBlue, #colorRed, #colorGreen {
+	#canvasButtonContainer {
+		margin-top: 25px;
+		margin-left: 15px;
+	}
+	
+	#clearCanvasButton, #lineWidthSmallButton, #lineWidthMediumButton, #lineWidthLargeButton, #colorBlackButton, #colorBlueButton, #colorRedButton, #colorGreenButton, #colorYellowButton {
 		display: inline;
 	}
 	

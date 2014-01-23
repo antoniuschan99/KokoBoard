@@ -183,32 +183,36 @@ if (Meteor.isClient) {
 					});
 				}
 				
-				document.getElementById("lineWidthSmall").onclick = function() {
+				document.getElementById("lineWidthSmallButton").onclick = function() {
 					lineWidth = "2";
 				}
 				
-				document.getElementById("lineWidthMedium").onclick = function() {
+				document.getElementById("lineWidthMediumButton").onclick = function() {
 					lineWidth = "4";
 				}
 				
-				document.getElementById("lineWidthLarge").onclick = function() {
+				document.getElementById("lineWidthLargeButton").onclick = function() {
 					lineWidth = "6";
 				}
 				
-				document.getElementById("colorBlack").onclick = function() {
-					lineColor = "black";
+				document.getElementById("colorBlackButton").onclick = function() {
+					lineColor = "#000000";
 				}
 				
-				document.getElementById("colorBlue").onclick = function() {
-					lineColor = "blue";
+				document.getElementById("colorBlueButton").onclick = function() {
+					lineColor = "#0000FF";
 				}
 				
-				document.getElementById("colorRed").onclick = function() {
+				document.getElementById("colorRedButton").onclick = function() {
 					lineColor = "#FF0000";
 				}
 				
-				document.getElementById("colorGreen").onclick = function() {
-					lineColor = "green";
+				document.getElementById("colorGreenButton").onclick = function() {
+					lineColor = "#00FF00";
+				}
+				
+				document.getElementById("colorYellowButton").onclick = function() {
+					lineColor = "#FFFF00";
 				}
 				 
 			}

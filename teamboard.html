@@ -2,24 +2,31 @@
 </head>
 
 <body>
+	<header>
+		<div>TeamBoard.me</div>
+	</header>
+
     {{> canvas }}
 </body>
 
 <template name="canvas">
 
-	<canvas id="sketchpad" height="500px" width="950px"></canvas>
+	<div id="canvasContainer">
+		<canvas id="sketchpad" height="500px" width="950px"></canvas>
+	</div>
 	
 	<div id="canvasButtonContainer">
 		<button id="clearCanvasButton">Clear Canvas</button>
 		
-		<button id="lineWidthSmall">Small</button>
-		<button id="lineWidthMedium">Medium</button>
-		<button id="lineWidthLarge">Large</button>
+		<button id="lineWidthSmallButton">Small</button>
+		<button id="lineWidthMediumButton">Medium</button>
+		<button id="lineWidthLargeButton">Large</button>
 		
-		<button id="colorBlack">Black</button>
-		<button id="colorBlue">Blue</button>
-		<button id="colorRed">Red</button>
-		<button id="colorGreen">Green</button>
+		<button id="colorBlackButton">Black</button>
+		<button id="colorBlueButton">Blue</button>
+		<button id="colorRedButton">Red</button>
+		<button id="colorGreenButton">Green</button>
+		<button id="colorYellowButton">Yellow</button>
 	</div>
 	
 </template>
