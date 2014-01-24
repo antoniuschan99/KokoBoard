@@ -10,6 +10,7 @@ if (Meteor.isClient) {
 		Meteor.subscribe('pointsSubscription', function() {
 
 		    Deps.autorun(function() {
+		    	
 		    	if (isReactive == true) {
 		    		console.log("Is Reactive");
 					var data = points.find({}).fetch();	
@@ -55,6 +56,8 @@ if (Meteor.isClient) {
 						//	console.log("X Coordinate " + data[i].x);
 						//	console.log("Y Coordinate " + data[i].y);		
 				 		//}
+				    } else {
+				    	context.clearRect(0, 0, canvas.width, canvas.height);
 				    }	
 				    
 				}
@@ -178,11 +181,9 @@ if (Meteor.isClient) {
 					var confirmResult = confirm("Are you sure you want to clear canvas?");
 					
 					if (confirmResult == true) {
-						Meteor.call('clear', function() {
-							Meteor.call('clear')
-							location.reload();
-						});
-					}
+ 						Meteor.call('clear');
+						location.reload();
+ 					}
 				}
 				
 				lineWidthEventHandler = function(elem) {
@@ -222,7 +223,6 @@ if (Meteor.isServer) {
 	Meteor.methods({
 	  'clear': function () {
 	    points.remove({});
-	      
-	  }
+ 	  }
 	});
 }

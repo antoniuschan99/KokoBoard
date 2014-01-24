@@ -1,12 +1,19 @@
 html, body {
 	height: 100%;
     overflow: hidden;
+    background: -webkit-linear-gradient(grey, #CDCDCD); /* For Safari */
+background: -o-linear-gradient(grey, #DCDCD); /* For Opera 11.1 to 12.0 */
+background: -moz-linear-gradient(grey, #DCDCD); /* For Firefox 3.6 to 15 */
+background: linear-gradient(grey, #DCDCD); /* Standard syntax (must be last) */
 }
 
 header {
   height: 50px;
   	position: relative;
 	background-color: #f9e299;
+	width: 970px;
+	margin: 0 auto;
+	text-align: center
 }
 
 header div { 
@@ -25,6 +32,9 @@ header div {
 	border: 1px solid black;
 	display: block;
 	margin: 0 auto;
+	background: white;
+	box-shadow: 10px 10px 5px #888888;
+
 }
 
 #clearCanvasButton, #lineWidthSmallButton, #lineWidthMediumButton, #lineWidthLargeButton, #colorBlackButton, #colorBlueButton, #colorRedButton, #colorGreenButton, #colorYellowButton {
@@ -62,11 +72,14 @@ header div {
 	
 	#clearCanvasButton {
 		float: left;
-		width: 150px;
+		height: 35px;
+		width: 125px;
 		border: 3px solid grey;
-		border-radius: 3px;
-		color: white;
+		border-radius: 10px;
+ 		background-color: #CDCDCD;
 		font-size: 14px;
+		margin-left: 15px;
+		margin-top: 7px;
 	}
 	
 	#lineWidthButtonContainer {
