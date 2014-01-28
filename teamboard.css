@@ -2,38 +2,31 @@ html, body {
 	height: 100%;
 	margin: 0;
     overflow: hidden;
-    background: -webkit-linear-gradient(grey, #CDCDCD);  
-	background: -o-linear-gradient(grey, #CDCDCD);  
-	background: -moz-linear-gradient(grey, #CDCDCD);  
-	background: linear-gradient(grey, #CDCDCD);  
-}
-
-header {
-    height: 50px;
-  	position: relative;
-	background-color: #f9e299;
-	margin: 0 auto;
-	text-align: center;
-}
-
-header div { 
-	font-weight: bold; font-size: 28px; padding-top: 8px; padding-left: 25px; font-family: Helvetica Neue;
+	background: #CDCDCD;  
 }
 
 #canvasContainer {
 	position: relative;
-	padding-top: 20px;
-	left: 0;
-	right: 0;
+	padding-top: 100px;
 	margin: 0 auto;
+	width: 985px;
+}
+
+#canvasContainer span {
+	position: relative;
+	top: 25px;
+	left: 10px;
+	font-family: Helvetica Neue;
+	font-weight: bold;
 }
 
 #sketchpad {
-	border: 1px solid black;
-	display: block;
+ 	display: block;
 	margin: 0 auto;
 	background: white;
-	box-shadow: 10px 10px 5px #888888;
+	border: 2px solid #FAFAFA;
+	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+
 }
 
 #clearCanvasButton, #lineWidthSmallButton, #lineWidthMediumButton, #lineWidthLargeButton, #colorBlackButton, #colorBlueButton, #colorRedButton, #colorGreenButton, #colorYellowButton {
@@ -46,15 +39,16 @@ header div {
 		background: white;
 	}
 	
-	header {
-		display: none;
-	}
-	
 	#canvasContainer {
 		position: absolute;
  		left: 0;
 		right: 0;
 		margin: 0 auto;
+		padding: 0;
+	}
+	
+	#canvasContainer span { 
+		display: none;
 	}
 	
 	#sketchpad {
